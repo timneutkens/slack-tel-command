@@ -1,0 +1,18 @@
+{
+  "name": "tel-command",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "micro ."
+  },
+  "dependencies": {
+    "fuse.js": "^2.5.0",
+    "micro": "^6.0.2",
+    "pify": "^2.3.0",
+    "slack": "^7.7.3",
+    "urlencoded-body-parser": "^1.0.1"
+  },
+  "author": "Tim Neutkens",
+  "license": "MIT"
+}
