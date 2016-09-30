@@ -6,6 +6,9 @@
   "scripts": {
     "start": "micro ."
   },
+  "standard": {
+    "parser": "babel-eslint"
+  },
   "dependencies": {
     "fuse.js": "^2.5.0",
     "micro": "^6.0.2",
@@ -14,5 +17,9 @@
     "urlencoded-body-parser": "^1.0.1"
   },
   "author": "Tim Neutkens",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "babel-eslint": "^7.0.0",
+    "standard": "^8.3.0"
+  }
 }
