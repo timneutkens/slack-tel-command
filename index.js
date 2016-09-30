@@ -14,23 +14,17 @@ async function fetchUsers () {
   }, [])
 }
 
-function renderList (data) {
-  return data.map(({name, phone}) => {
-    return `*${name}*: ${phone}`
-  }).join('\n')
-}
+const renderList = data => data.map(({name, phone}) => `*${name}*: ${phone}`).join('\n')
 
 module.exports = async function (req, res) {
-  if (req.method !== 'POST') {
-    return ''
-  }
+  if (req.method !== 'POST') return ''
 
-  const {text: commandText, token} = await parseFormData(req)
-  if (token !== process.env.SLACK_TOKEN) {
-    return ''
-  }
+  const {text: searchText, token} = await parseFormData(req)
+
+  if (token !== process.env.SLACK_TOKEN) return 'Unathorized'
 
   const data = await fetchUsers()
+
   const fuse = new Fuse(data, {
     shouldSort: true,
     threshold: 0.3,
@@ -43,17 +37,13 @@ module.exports = async function (req, res) {
     ]
   })
 
-  const searchText = commandText || ''
+  if (!searchText || searchText === '') return 'Please supply a query'
 
-  if (searchText === 'all') {
-    return renderList(data)
-  }
+  if (searchText === 'all') return renderList(data)
 
   const results = fuse.search(searchText)
 
-  if (results.length > 0) {
-    return renderList(results)
-  }
+  if (results.length > 0) return renderList(results)
 
   return 'Could not find user'
 }
