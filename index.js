@@ -17,11 +17,11 @@ async function fetchUsers () {
 const renderList = data => data.map(({name, phone}) => `*${name}*: ${phone}`).join('\n')
 
 module.exports = async function (req, res) {
-  if (req.method !== 'POST') return ''
+  if (req.method !== 'POST') return 'Unauthorized'
 
   const {text: searchText, token} = await parseFormData(req)
 
-  if (token !== process.env.SLACK_TOKEN) return 'Unathorized'
+  if (token !== process.env.SLACK_TOKEN) return 'Unauthorized'
 
   if (!searchText || searchText === '') return 'Please supply a query'
 
@@ -42,7 +42,5 @@ module.exports = async function (req, res) {
 
   const results = fuse.search(searchText)
 
-  if (results.length > 0) return renderList(results)
-
-  return 'Could not find user'
+  return results.length > 0 ? renderList(results) : 'Could not find user'
 }
