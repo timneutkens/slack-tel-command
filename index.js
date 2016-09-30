@@ -23,7 +23,10 @@ module.exports = async function (req, res) {
 
   if (token !== process.env.SLACK_TOKEN) return 'Unathorized'
 
+  if (!searchText || searchText === '') return 'Please supply a query'
+
   const data = await fetchUsers()
+  if (searchText === 'all') return renderList(data)
 
   const fuse = new Fuse(data, {
     shouldSort: true,
@@ -36,10 +39,6 @@ module.exports = async function (req, res) {
       'phone'
     ]
   })
-
-  if (!searchText || searchText === '') return 'Please supply a query'
-
-  if (searchText === 'all') return renderList(data)
 
   const results = fuse.search(searchText)
 
